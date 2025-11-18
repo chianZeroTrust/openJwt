@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户仪表板</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .user-card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>用户仪表板</h1>
+
+        <div class="user-card">
+            <h3>用户信息</h3>
+            <p><strong>用户ID:</strong> {{ user_info.userid }}</p>
+            <p><strong>用户编号:</strong> {{ user_info.userNo }}</p>
+            <p><strong>邮箱:</strong> {{ user_info.email }}</p>
+            {% if user_info.name %}
+            <p><strong>姓名:</strong> {{ user_info.name }}</p>
+            {% endif %}
+            {% if user_info.department %}
+            <p><strong>部门:</strong> {{ user_info.department }}</p>
+            {% endif %}
+        </div>
+
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">返回首页</a>
+        <a href="{{ url_for('logout') }}" class="btn btn-primary" style="margin-left: 10px;">退出登录</a>
+
+        <!-- 调试信息 -->
+        <div style="margin-top: 20px; padding: 15px; background-color: #e6f7ff; border-radius: 4px;">
+            <h4>Session信息：</h4>
+            <p>Token: {{ session.get('jwt_token', 'No token')[:50] }}...</p>
+        </div>
+    </div>
+</body>
+</html>

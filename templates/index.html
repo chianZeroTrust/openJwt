@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT SSO 认证示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .login-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+        .user-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .error {
+            color: red;
+            background-color: #ffe6e6;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JWT SSO 认证示例</h1>
+
+        <!-- 修复：直接使用user_info变量而不是session.user_info -->
+        {% if user_info %}
+            <div class="user-info">
+                <h3>登录成功！</h3>
+                <p><strong>用户ID:</strong> {{ user_info.userid }}</p>
+                <p><strong>用户编号:</strong> {{ user_info.userNo }}</p>
+                <p><strong>邮箱:</strong> {{ user_info.email }}</p>
+                <a href="{{ url_for('dashboard') }}" class="login-btn">进入仪表板</a>
+                <a href="{{ url_for('logout') }}" style="margin-left: 10px; color: #666;">退出登录</a>
+            </div>
+        {% else %}
+            <p>请点击下方按钮进行SSO认证：</p>
+            <a href="{{ url_for('sso_login') }}" class="login-btn">SSO-JWT认证</a>
+
+            <div style="margin-top: 30px; padding: 15px; background-color: #fff3cd; border-radius: 4px;">
+                <h3>测试说明：</h3>
+                <p>1. 点击上方按钮跳转到SSO登录页面</p>
+                <p>2. SSO登录成功后会自动跳转回此应用</p>
+                <p>3. 调试信息：</p>
+                <ul>
+                    <li><a href="{{ url_for('generate_test_token') }}" target="_blank">生成测试Token</a></li>
+                    <li><a href="/test">查看Session状态</a></li>
+                    <li>回调URL: /jwt/callback?jwt=token_value</li>
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- 显示调试信息 -->
+        <div style="margin-top: 20px; padding: 15px; background-color: #e6f7ff; border-radius: 4px;">
+            <h4>调试信息：</h4>
+            <p>Session ID: {{ session.get('_id', 'No session ID') }}</p>
+            <p>User Info in Session: {{ session.get('user_info', 'No user info') }}</p>
+        </div>
+    </div>
+</body>
+</html>
