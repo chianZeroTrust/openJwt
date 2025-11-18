@@ -38,7 +38,7 @@ def sso_login():
 def jwt_callback():
     """JWT回调接口 - 处理SSO返回的token"""
     try:
-        token = request.args.get('jwt')
+        token = request.args.get('token')
         if not token:
             return jsonify({'code': 50000, 'msg': 'Token is required'}), 400
 
